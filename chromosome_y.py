@@ -6,6 +6,10 @@ import sys
 # Argv 3 - CHR Y PERFECT REGIONS (BED FILE)
 # Argv 4 - BIN SIZE
 
+""" Script for calculating fetal fraction with chromosome Y based formula
+    and separating reads to bins.
+"""
+
 bin_size = int(sys.argv[4])
 CHR_TOTAL_LENGTH = 2633553926  # SUM of all chromosomes/{13,18,21,X,Y}
 
