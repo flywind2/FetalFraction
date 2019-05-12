@@ -38,21 +38,16 @@ panel$patient <- gsub('_-', '-', panel$patient)
 panel$patient <- gsub('_', '-', panel$patient)
 panel$patient <- gsub('-[0-9][0-9][0-9][0-9]+', '', panel$patient)
 
-
-# Keep male fetuses
-#m <- filter(panel, panel$patient %in% males$patient)
-#f <- filter(panel, panel$patient %in% females$patient)
-
+# Keep male fetuses + normalize
 males_panel <- colSums(normalize(filter(panel, panel$patient %in% males$patient)))
 females_panel <- colSums(normalize(filter(panel, panel$patient %in% females$patient)))
 newdf <- rbind(as.data.frame(t(males_panel), row.names = "males"), as.data.frame(t(females_panel),row.names = "females"))
 
-#write.csv2(newdf,"excel")
+# write.csv2(newdf,"excel")
 
 # Read count distribution on XR7 and XR4
 barplot(as.matrix(newdf),cex.names=0.5,main="Read count distribution on Y",las=2,beside=T,legend = rownames(newdf),col=c("black","white"))
 barplot(as.matrix(data.frame(newdf$X7275959.7562959,newdf$X6857959.7147959)),cex.names=1,main="Read count distribution on XR7 and XR4",las=1,beside=T,legend = rownames(newdf),col=c("black","white"))
-
 
 # Create histograms:
 # Fetal fraction comparison in male and female pregnancies based on chromosome Y using x well covered unique regions
@@ -73,10 +68,8 @@ for (i in 1:24) {
   panel$patient <- gsub('_', '-', panel$patient)
   panel$patient <- gsub('-[0-9][0-9][0-9][0-9]+', '', panel$patient)
   
-  
   males_panel <- filter(panel, panel$patient %in% males$patient)
   females_panel <- filter(panel, panel$patient %in% females$patient)
-  
   
   df2 <- data.frame(from = c(mean(males_panel$FF),median(males_panel$FF),mean(females_panel$FF),median(females_panel$FF)))
   colnames(df2) <- from
