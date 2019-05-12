@@ -1,5 +1,23 @@
-library(data.table) # for fast fread
+library(data.table) # For fast read
 library(dplyr)
+
+# Distribution of SeqFF fetal fraction estimates
+all <- fread("ff_all.txt", header=T)
+hist(all$FF,col="blue", breaks = 20,xlim=c(0,50), ylim=c(0,80))
+
+# Comparison of the SeqFF and chromosome Y based fetal fraction estimates
+comparison <- fread("y_vs_seqff.txt", header=T)
+plot(comparison$FF, comparison$`Y based (CCHT)`, main="Y vs SeqFF", xlab="SeqFF", ylab="Y based", pch=19, col="blue")
+
+# Processed data (GB) in each stage
+data <- data.frame(Commodity = factor(c("Concatination step", "Alignment step", "Filtering (MAPQ 35)", "Chromosome Y based input"),
+levels = c("Concatination step", "Alignment step", "Filtering (MAPQ 35)", "Chromosome Y based input")),
+Production = c(501.2, 1700, 1100, 136))
+barplot(data$Production, names = data$Commodity, main = "Data size GB", horiz=TRUE, xlim=c(0,2000), col="blue")
+
+# Sum of read counts
+raw_regions <- fread("sums.txt", header=T)
+barplot(raw_regions$`Sum of raw read counts across all individuals`,  names = raw_regions$`Regions in chromosomal order` , main = "Sum of raw read counts", col="blue",las=2)
 
 normalize <- function(df){
   df <- data.frame(df)
@@ -69,3 +87,5 @@ for (i in 1:24) {
   
   df <- cbind(df,df2)
 }
+
+
