@@ -37,7 +37,7 @@ while IFS='' read -r line || [[ -n "$line" ]]; do
     location=$line
     sample=${location##*/}
     echo $sample
-    zcat --force $location/*.fastq* | bowtie2 --very-sensitive -q -x $REF -p 10 | samtools view -q 30 -S - | cut -f3,4 | Rscript seqff.sam.R | (printf "$sample\t" && cat) >> results.test1.sam.tsv
+    zcat --force $location/*.fastq* | bowtie2 --very-sensitive -q --no-unal -x $REF --norc -p 10 | samtools view -q 30 -S - | cut -f3,4 | Rscript seqff.sam.R | (printf "$sample\t" && cat) >> results.test1.sam.tsv
 done < "$locations"
 
 echo "DONE!"
