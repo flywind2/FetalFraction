@@ -32,7 +32,7 @@ do
   cat $dir/*L001* $dir/*L002* $dir/*L003* $dir/*L004* > $dir/concatenated.fastq.gz
   # Use the concatenated for mapping
   echo "$dir - bowtie"
-  /gpfs/hpchome/ppaluoja/software/bowtie2-2.3.3.1/bowtie2 --very-sensitive -x /gpfs/rocket/samba/CCHT/BelgiaNIPT/fastq/bwtie38 -q "$dir/concatenated.fastq.gz" -S "$dir/results.sam"  -p 10
+  /gpfs/hpchome/ppaluoja/software/bowtie2-2.3.3.1/bowtie2 --very-sensitive --norc -x /gpfs/rocket/samba/CCHT/BelgiaNIPT/fastq/bwtie38 -q "$dir/concatenated.fastq.gz" -S "$dir/results.sam" --no-unal -p 10
   # Filter by quality
   samtools view -q 35 "$dir/results.sam" > "$dir/filtered35.sam"
   # No need to hold the concatenated file
